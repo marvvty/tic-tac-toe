@@ -1,0 +1,79 @@
+:root {
+  --white: #ffffff;
+  --secondary--color: #ff0080;
+}
+
+body {
+  background-color: #0a0a0a;
+}
+.music__play-btn {
+  padding: 8px 16px;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 50px 20px;
+  font-family: "Pixelify Sans", sans-serif;
+}
+.main__title {
+  color: var(--white);
+  text-shadow: 0 0 15px var(--secondary--color);
+  text-align: center;
+  font-size: 42px;
+}
+.main__winner-msg {
+  color: var(--white);
+  text-shadow: 0 0 5px #00ff73;
+  font-size: 22px;
+}
+.grid-container {
+  display: grid;
+  grid-template: 90px 90px 90px/90px 90px 90px;
+  margin: 0 auto;
+  gap: 10px;
+  border: 2px solid #00ffff;
+  border-radius: 24px;
+  padding: 16px;
+  box-shadow: 0 0 20px #00ffff, inset 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+.btn {
+  border-radius: 16px;
+  border: 2px solid var(--secondary--color);
+  background-color: #1a1a1a;
+  color: var(--white);
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 0, 128, 0.5);
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 16px;
+}
+
+.btn:hover {
+  box-shadow: 0 0 25px var(--secondary--color),
+    inset 0 0 15px rgba(255, 0, 128, 0.2);
+}
+.grid-container__btn {
+  font-size: 32px;
+}
+.controller {
+  display: flex;
+  gap: 20px;
+}
+
+.controller__button {
+  padding: 8px 16px;
+  background-color: #2a2a2a;
+}
+.controller__button--winner {
+  background-color: #5d744e;
+}
+.controller__button:hover {
+  background-color: #3a3a3a;
+}
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template: 40px 40px 40px/40px 40px 40px;
+  }
+}
