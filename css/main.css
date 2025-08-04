@@ -6,6 +6,9 @@
 body {
   background-color: #0a0a0a;
 }
+.music {
+  padding: 20px;
+}
 .music__play-btn {
   padding: 8px 16px;
 }
@@ -13,9 +16,15 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
-  padding: 50px 20px;
+  justify-content: center;
   font-family: "Pixelify Sans", sans-serif;
+  height: 800px;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
 }
 .main__title {
   color: var(--white);
@@ -36,7 +45,8 @@ body {
   border: 2px solid #00ffff;
   border-radius: 24px;
   padding: 16px;
-  box-shadow: 0 0 20px #00ffff, inset 0 0 20px rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 20px #00ffff;
+  margin: auto;
 }
 
 .btn {
@@ -51,8 +61,7 @@ body {
 }
 
 .btn:hover {
-  box-shadow: 0 0 25px var(--secondary--color),
-    inset 0 0 15px rgba(255, 0, 128, 0.2);
+  box-shadow: 0 0 25px var(--secondary--color);
 }
 .grid-container__btn {
   font-size: 32px;
