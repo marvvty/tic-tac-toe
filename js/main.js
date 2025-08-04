@@ -64,10 +64,10 @@ function showWin(winner) {
   winnerMsg.textContent = winner === "draw" ? "Draw" : `${winner} is winner`;
 }
 
-function highlightWinner(winCell) {
-  winCell.forEach((i) => {
+function highlightWinner(winBox) {
+  for (let i of winBox) {
     boxes[i].classList.add("controller__button--winner");
-  });
+  }
 }
 
 function clickEvent(event) {
@@ -95,4 +95,5 @@ function restartGame() {
 
 const play = () =>
   boxes.forEach((box) => box.addEventListener("click", clickEvent));
+play();
 restartBtn.addEventListener("click", restartGame);
