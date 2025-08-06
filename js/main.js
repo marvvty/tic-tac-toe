@@ -1,99 +1,230 @@
-"use strict";
-const boxes = document.querySelectorAll(".grid-container__btn");
-const winnerMsg = document.querySelector(".main__winner-msg");
-const restartBtn = document.querySelector(".controller__button");
-const audioPlayer = document.getElementById("audioPlayer");
+class TicTacToe {
+  constructor() {
+    this.boardSize = 3;
+    this.player = "X";
+    this.board = [];
+    this.isGameOver = false;
 
-audioPlayer.volume = 0.4;
+    this.boardDiv = document.getElementById("board");
+    this.msg = document.getElementById("msg");
+    this.restartBtn = document.getElementById("restartBtn");
+    this.addRowBtn = document.getElementById("addRow");
+    this.removeRowBtn = document.getElementById("removeRow");
 
-const startMusic = document.getElementById("playButton");
-startMusic.addEventListener("click", () => {
-  if (audioPlayer.paused) {
-    audioPlayer.play();
-    startMusic.textContent = "Pause Audio";
-  } else {
-    audioPlayer.pause();
-    startMusic.textContent = "Play Audio";
+    this.initGame();
+    this.addButtonListeners();
   }
-});
 
-let turn = "X";
-let gameOver = false;
-let gameStarted = true;
-
-const winCombinations = [
-  [0, 1, 2],
-  [0, 3, 6],
-  [0, 4, 8],
-  [1, 4, 7],
-  [2, 5, 8],
-  [2, 4, 6],
-  [3, 4, 5],
-  [6, 7, 8],
-];
-
-const changeTurn = () => {
-  return turn === "X" ? "O" : "X";
-};
-
-function checkIfWin() {
-  for (let winCombo of winCombinations) {
-    const [a, b, c] = winCombo;
-
-    if (
-      boxes[a].textContent &&
-      boxes[a].textContent === boxes[b].textContent &&
-      boxes[a].textContent === boxes[c].textContent
-    ) {
-      gameOver = true;
-
-      showWin(boxes[a].textContent);
-      highlightWinner(winCombo);
-      return true;
+  createBoard() {
+    for (let row = 0; row < this.boardSize; row++) {
+      this.board[row] = [];
+      for (let col = 0; col < this.boardSize; col++) {
+        this.board[row][col] = "";
+      }
     }
   }
-  if ([...boxes].every((box) => box.textContent != "")) {
-    gameOver = true;
-    showWin("draw");
+
+  drawBoard() {
+    this.boardDiv.replaceChildren();
+    this.boardDiv.style.gridTemplateColumns = `repeat(${this.boardSize}, 1fr)`;
+
+    for (let row = 0; row < this.boardSize; row++) {
+      for (let col = 0; col < this.boardSize; col++) {
+        const cellBtn = this.createCell(row, col);
+        this.boardDiv.appendChild(cellBtn);
+      }
+    }
+  }
+
+  createCell(row, col) {
+    const btn = document.createElement("button");
+    btn.classList = "btn grid-container__btn";
+
+    btn.textContent = this.board[row][col];
+    btn.addEventListener("click", () => this.makeMove(row, col));
+
+    return btn;
+  }
+
+  changePlayer() {
+    this.player = this.player === "X" ? "O" : "X";
+  }
+
+  makeMove(row, col) {
+    if (this.isGameOver) return;
+    if (this.board[row][col] !== "") return;
+
+    this.board[row][col] = this.player;
+    this.drawBoard();
+
+    if (this.checkWin()) {
+      this.msg.textContent = `Winner is ${this.player}`;
+      this.isGameOver = true;
+
+      return;
+    }
+
+    if (this.checkDraw()) {
+      this.msg.textContent = `Draw`;
+      this.isGameOver = true;
+
+      return;
+    }
+    this.changePlayer();
+  }
+
+  checkWin() {
+    if (this.checkColumns()) return true;
+
+    if (this.checkRows()) return true;
+
+    if (this.checkDiagonals()) return true;
+
+    return false;
+  }
+
+  checkDraw() {
+    for (let row = 0; row < this.boardSize; row++) {
+      for (let col = 0; col < this.boardSize; col++) {
+        if (this.board[row][col] === "") {
+          return false;
+        }
+      }
+    }
     return true;
   }
-  return false;
-}
 
-function showWin(winner) {
-  winnerMsg.textContent = winner === "draw" ? "Draw" : `${winner} is winner`;
-}
+  getRow(rowNumber) {
+    return this.board[rowNumber];
+  }
 
-function highlightWinner(winBox) {
-  for (let i of winBox) {
-    boxes[i].classList.add("controller__button--winner");
+  getColumn(colNumber) {
+    let column = [];
+    for (let row = 0; row < this.boardSize; row++) {
+      column.push(this.board[row][colNumber]);
+    }
+
+    return column;
+  }
+
+  getMainDiagonal() {
+    let diagonal = [];
+
+    for (let i = 0; i < this.boardSize; i++) {
+      diagonal.push(this.board[i][i]);
+    }
+
+    return diagonal;
+  }
+
+  getSecondDiagonal() {
+    let diagonal = [];
+
+    for (let i = 0; i < this.boardSize; i++) {
+      diagonal.push(this.board[i][this.boardSize - 1 - i]);
+    }
+
+    return diagonal;
+  }
+
+  checkColumns() {
+    for (let col = 0; col < this.boardSize; col++) {
+      if (this.checkOneLine(this.getColumn(col))) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  checkRows() {
+    for (let row = 0; row < this.boardSize; row++) {
+      if (this.checkOneLine(this.getRow(row))) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  checkDiagonals() {
+    if (this.checkOneLine(this.getMainDiagonal())) {
+      return true;
+    }
+
+    if (this.checkOneLine(this.getSecondDiagonal())) {
+      return true;
+    }
+    return false;
+  }
+
+  checkOneLine(line) {
+    let firstSymbol = line[0];
+
+    if (firstSymbol === "") return false;
+
+    for (let i = 0; i < line.length; i++) {
+      if (line[i] !== firstSymbol) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  clearMsg() {
+    this.msg.textContent = "";
+  }
+
+  changeBoardSize(newBoardSize) {
+    if (3 > newBoardSize || newBoardSize > 100) return;
+
+    this.boardSize = newBoardSize;
+    this.initGame();
+  }
+
+  initGame() {
+    this.player = "X";
+    this.isGameOver = false;
+
+    this.clearMsg();
+    this.createBoard();
+    this.drawBoard();
+  }
+
+  addButtonListeners() {
+    this.restartBtn.addEventListener("click", () => this.initGame());
+    this.addRowBtn.addEventListener("click", () =>
+      this.changeBoardSize(this.boardSize + 1)
+    );
+    this.removeRowBtn.addEventListener("click", () =>
+      this.changeBoardSize(this.boardSize - 1)
+    );
   }
 }
 
-function clickEvent(event) {
-  if (!gameStarted || gameOver) return;
+class Music {
+  constructor() {
+    this.playBtn = document.getElementById("playBtn");
+    this.audioPlayer = document.getElementById("audioPlayer");
+    this.audioPlayer.volume = 0.4;
+    this.addButtonListeners();
+  }
 
-  const btn = event.target;
-
-  if (btn.textContent !== "") return;
-
-  btn.textContent = turn;
-
-  if (!checkIfWin()) turn = changeTurn();
+  changeButtonTitle(newTitle) {
+    this.playBtn.textContent = newTitle;
+  }
+  addButtonListeners() {
+    this.playBtn.addEventListener("click", () => {
+      if (this.audioPlayer.paused) {
+        this.audioPlayer.play();
+        this.changeButtonTitle("pause music");
+      } else {
+        this.audioPlayer.pause();
+        this.changeButtonTitle("play music");
+      }
+    });
+  }
 }
-function restartGame() {
-  boxes.forEach((box) => {
-    box.textContent = "";
-    box.classList.remove("controller__button--winner");
-  });
-
-  turn = "X";
-  gameOver = false;
-  gameStarted = true;
-  winnerMsg.textContent = "";
-}
-
-const play = () =>
-  boxes.forEach((box) => box.addEventListener("click", clickEvent));
-play();
-restartBtn.addEventListener("click", restartGame);
+const ticTacToe = new TicTacToe();
+const music = new Music();

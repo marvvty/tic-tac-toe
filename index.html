@@ -8,29 +8,28 @@
   />
 </head>
 <body>
-  <header class="music">
-    <button id="playButton" class="btn music__play-btn">play music</button>
+  <header class="header">
+    <div class="music">
+      <button id="playBtn" class="btn music__play-btn">play music</button>
+    </div>
+    <div class="controller">
+      <button id="addRow" class="btn controller__btn">add 1 row</button>
+      <button id="removeRow" class="btn controller__btn">remove 1 row</button>
+    </div>
   </header>
   <main class="main">
     <div class="container">
       <h1 class="main__title">TIC-TAC-TOE</h1>
-      <div class="main__winner"><h3 class="main__winner-msg"></h3></div>
-      <div class="grid-container" id="board">
-        <button class="btn grid-container__btn"></button>
-        <button class="btn grid-container__btn"></button>
-        <button class="btn grid-container__btn"></button>
-        <button class="btn grid-container__btn"></button>
-        <button class="btn grid-container__btn"></button>
-        <button class="btn grid-container__btn"></button>
-        <button class="btn grid-container__btn"></button>
-        <button class="btn grid-container__btn"></button>
-        <button class="btn grid-container__btn"></button>
-      </div>
+      <div class="main__sub-title"><h3 id="msg" class="main__msg"></h3></div>
+      <div class="grid-container" id="board"></div>
       <div class="controller">
-        <button class="btn controller__button">Restart</button>
+        <button id="restartBtn" class="btn controller__btn">Restart</button>
       </div>
     </div>
   </main>
-  <audio id="audioPlayer" src="asserts/music/hydrogen.mp3"></audio>
+  <audio
+    id="audioPlayer"
+    src="asserts/music/PYAT_NOCHEY_PES_PATRON.mp3"
+  ></audio>
   <script defer src="js/main.js"></script>
 </body>
