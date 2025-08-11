@@ -41,8 +41,10 @@ class TicTacToeBoard {
   constructor(game) {
     this.board = [];
     this.boardSize = 3;
+    this.winCondition = 3;
 
     this.boardDiv = document.getElementById("board");
+
     this.game = game;
   }
 
@@ -177,18 +179,24 @@ class TicTacToeBoard {
   }
 
   checkOneLine(line) {
-    let firstSymbol = line[0];
-
-    if (firstSymbol === "") return false;
+    let count = 0;
+    let last = "";
 
     for (let i = 0; i < line.length; i++) {
-      if (line[i] !== firstSymbol) {
-        return false;
+      if (line[i] !== "" && line[i] === last) {
+        count++;
+      } else {
+        count = 1;
+        last = line[i];
+      }
+      if (count >= this.winCondition) {
+        return true;
       }
     }
 
-    return true;
+    return false;
   }
+
   changeBoardSize(newBoardSize) {
     if (3 > newBoardSize || newBoardSize > 100) {
       alert("need >=3 or <=100");
@@ -196,6 +204,16 @@ class TicTacToeBoard {
     }
 
     this.boardSize = newBoardSize;
+    this.winCondition = newBoardSize;
+    this.game.initGame();
+  }
+  changeWinCondition(newWinCondition) {
+    if (3 > newWinCondition || newWinCondition > this.boardSize) {
+      alert("need >=3 or <=100");
+      return;
+    }
+
+    this.winCondition = newWinCondition;
     this.game.initGame();
   }
 }
@@ -207,6 +225,8 @@ class TicTacToeGame {
     this.restartBtn = document.getElementById("restartBtn");
     this.boardSizeInput = document.getElementById("boardSizeInput");
     this.setBoardSizeBtn = document.getElementById("setBoardSizeBtn");
+    this.boardWinCondition = document.getElementById("winConditionInput");
+    this.setWinCondition = document.getElementById("setWinConditionBtn");
 
     this.boardObject = new TicTacToeBoard(this);
     this.player = new Player(this, this.boardObject);
@@ -232,6 +252,11 @@ class TicTacToeGame {
 
     this.boardObject.changeBoardSize(newSize);
   }
+  handlerWinCondition() {
+    let newSize = parseInt(this.boardWinCondition.value, 10);
+
+    this.boardObject.changeWinCondition(newSize);
+  }
 
   initGame() {
     this.player.setPlayer("X");
@@ -250,6 +275,14 @@ class TicTacToeGame {
     this.boardSizeInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         this.handlerBoardSize();
+      }
+    });
+    this.setWinCondition.addEventListener("click", () =>
+      this.handlerWinCondition()
+    );
+    this.boardWinCondition.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        this.handlerWinCondition();
       }
     });
   }

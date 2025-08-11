@@ -45,7 +45,7 @@ body {
   border-radius: 24px;
   padding: 16px;
   box-shadow: 0 0 20px #00ffff;
-  width: min(60vmin, 60vw);
+  width: min(55vmin, 55vw);
   grid-template-columns: repeat(var(--board-size, 3), 1fr);
   overflow: hidden;
 }
