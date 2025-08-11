@@ -1,18 +1,49 @@
-class TicTacToe {
-  constructor() {
-    this.boardSize = 3;
+class Player {
+  constructor(game, board) {
     this.player = "X";
+
+    this.game = game;
+    this.boardObject = board;
+  }
+
+  changePlayer() {
+    this.player = this.player === "X" ? "O" : "X";
+  }
+
+  makeMove(row, col) {
+    if (this.game.getIsGameOver()) return;
+    if (this.boardObject.board[row][col] !== "") return;
+
+    this.boardObject.board[row][col] = this.player;
+    this.boardObject.drawBoard();
+
+    if (this.game.checkWin()) {
+      this.game.msg.textContent = `Winner is ${this.player}`;
+      this.game.setIsGameOver(true);
+
+      return;
+    }
+
+    if (this.game.checkDraw()) {
+      this.game.msg.textContent = `Draw`;
+      this.game.setIsGameOver(true);
+
+      return;
+    }
+    this.changePlayer();
+  }
+
+  setPlayer(newPlayer) {
+    this.player = newPlayer;
+  }
+}
+class TicTacToeBoard {
+  constructor(game) {
     this.board = [];
-    this.isGameOver = false;
+    this.boardSize = 3;
 
     this.boardDiv = document.getElementById("board");
-    this.msg = document.getElementById("msg");
-    this.restartBtn = document.getElementById("restartBtn");
-    this.addRowBtn = document.getElementById("addRow");
-    this.removeRowBtn = document.getElementById("removeRow");
-
-    this.initGame();
-    this.addButtonListeners();
+    this.game = game;
   }
 
   createBoard() {
@@ -22,6 +53,16 @@ class TicTacToe {
         this.board[row][col] = "";
       }
     }
+  }
+
+  createCell(row, col) {
+    const btn = document.createElement("button");
+    btn.classList = "btn grid-container__btn";
+
+    btn.textContent = this.board[row][col];
+    btn.addEventListener("click", () => this.player.makeMove(row, col));
+
+    return btn;
   }
 
   drawBoard() {
@@ -34,43 +75,6 @@ class TicTacToe {
         this.boardDiv.appendChild(cellBtn);
       }
     }
-  }
-
-  createCell(row, col) {
-    const btn = document.createElement("button");
-    btn.classList = "btn grid-container__btn";
-
-    btn.textContent = this.board[row][col];
-    btn.addEventListener("click", () => this.makeMove(row, col));
-
-    return btn;
-  }
-
-  changePlayer() {
-    this.player = this.player === "X" ? "O" : "X";
-  }
-
-  makeMove(row, col) {
-    if (this.isGameOver) return;
-    if (this.board[row][col] !== "") return;
-
-    this.board[row][col] = this.player;
-    this.drawBoard();
-
-    if (this.checkWin()) {
-      this.msg.textContent = `Winner is ${this.player}`;
-      this.isGameOver = true;
-
-      return;
-    }
-
-    if (this.checkDraw()) {
-      this.msg.textContent = `Draw`;
-      this.isGameOver = true;
-
-      return;
-    }
-    this.changePlayer();
   }
 
   checkWin() {
@@ -91,6 +95,7 @@ class TicTacToe {
         }
       }
     }
+
     return true;
   }
 
@@ -100,6 +105,7 @@ class TicTacToe {
 
   getColumn(colNumber) {
     let column = [];
+
     for (let row = 0; row < this.boardSize; row++) {
       column.push(this.board[row][colNumber]);
     }
@@ -171,38 +177,72 @@ class TicTacToe {
 
     return true;
   }
+  changeBoardSize(newBoardSize) {
+    if (3 > newBoardSize || newBoardSize > 100) {
+      alert("need >=3 or <=100");
+      return;
+    }
+
+    this.boardSize = newBoardSize;
+    this.game.initGame();
+  }
+}
+class TicTacToeGame {
+  constructor() {
+    this.isGameOver = false;
+
+    this.msg = document.getElementById("msg");
+    this.restartBtn = document.getElementById("restartBtn");
+    this.boardSizeInput = document.getElementById("boardSizeInput");
+    this.setBoardSizeBtn = document.getElementById("setBoardSizeBtn");
+
+    this.player = new Player(this, null);
+    this.boardObject = new TicTacToeBoard(this);
+    this.player.board = this.boardObject;
+
+    this.initGame();
+    this.addListeners();
+  }
+
+  getIsGameOver() {
+    return this.isGameOver;
+  }
+
+  setIsGameOver(isGameOver) {
+    this.isGameOver = isGameOver;
+  }
 
   clearMsg() {
     this.msg.textContent = "";
   }
 
-  changeBoardSize(newBoardSize) {
-    if (3 > newBoardSize || newBoardSize > 100) return;
+  handlerBoardSize() {
+    let newSize = parseInt(this.boardSizeInput.value, 10);
 
-    this.boardSize = newBoardSize;
-    this.initGame();
+    this.boardObject.changeBoardSize(newSize);
   }
 
   initGame() {
-    this.player = "X";
+    this.player.setPlayer("X");
     this.isGameOver = false;
 
     this.clearMsg();
-    this.createBoard();
-    this.drawBoard();
+    this.boardObject.createBoard();
+    this.boardObject.drawBoard();
   }
 
-  addButtonListeners() {
+  addListeners() {
     this.restartBtn.addEventListener("click", () => this.initGame());
-    this.addRowBtn.addEventListener("click", () =>
-      this.changeBoardSize(this.boardSize + 1)
+    this.setBoardSizeBtn.addEventListener("click", () =>
+      this.handlerBoardSize()
     );
-    this.removeRowBtn.addEventListener("click", () =>
-      this.changeBoardSize(this.boardSize - 1)
-    );
+    this.boardSizeInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        this.handlerBoardSize();
+      }
+    });
   }
 }
-
 class Music {
   constructor() {
     this.playBtn = document.getElementById("playBtn");
@@ -226,5 +266,5 @@ class Music {
     });
   }
 }
-const ticTacToe = new TicTacToe();
+const ticTacToe = new TicTacToeGame();
 const music = new Music();

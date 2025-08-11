@@ -12,10 +12,6 @@
     <div class="music">
       <button id="playBtn" class="btn music__play-btn">play music</button>
     </div>
-    <div class="controller">
-      <button id="addRow" class="btn controller__btn">add 1 row</button>
-      <button id="removeRow" class="btn controller__btn">remove 1 row</button>
-    </div>
   </header>
   <main class="main">
     <div class="container">
@@ -23,6 +19,19 @@
       <div class="main__sub-title"><h3 id="msg" class="main__msg"></h3></div>
       <div class="grid-container" id="board"></div>
       <div class="controller">
+        <div class="input-controller">
+          <input
+            id="boardSizeInput"
+            class="btn controller__btn controller__input"
+            type="number"
+            value="3"
+            min="3"
+            max="100"
+          />
+          <button id="setBoardSizeBtn" class="btn controller__btn">
+            Set Size
+          </button>
+        </div>
         <button id="restartBtn" class="btn controller__btn">Restart</button>
       </div>
     </div>
