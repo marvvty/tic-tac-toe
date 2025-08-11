@@ -4,6 +4,13 @@ class Player {
 
     this.game = game;
     this.boardObject = board;
+
+    this.score = { X: 0, O: 0 };
+
+    this.oWinsScoreCount = document.getElementById("oCountWins");
+    this.xWinsScoreCount = document.getElementById("xCountWins");
+
+    this.getLocalStorageWins();
   }
 
   changePlayer() {
@@ -18,6 +25,10 @@ class Player {
     this.boardObject.drawBoard();
 
     if (this.boardObject.checkWin()) {
+      this.score[this.player]++;
+
+      this.setWinnerCount();
+
       this.game.msg.textContent = `Winner is ${this.player}`;
       this.game.setIsGameOver(true);
 
@@ -31,6 +42,22 @@ class Player {
       return;
     }
     this.changePlayer();
+  }
+  setWinnerCount() {
+    this.updateScoreDisplay();
+    localStorage.setItem("winCount", JSON.stringify(this.score));
+  }
+  updateScoreDisplay() {
+    this.xWinsScoreCount.textContent = `X - ${this.score.X}`;
+    this.oWinsScoreCount.textContent = `O - ${this.score.O}`;
+  }
+
+  getLocalStorageWins() {
+    const savedScore = localStorage.getItem("winCount");
+    if (savedScore) {
+      this.score = JSON.parse(savedScore);
+    }
+    this.updateScoreDisplay();
   }
 
   setPlayer(newPlayer) {
@@ -212,6 +239,7 @@ class TicTacToeBoard {
       alert("need >=3 or <=100");
       return;
     }
+    alert(`now need ${newWinCondition} in row for win`);
 
     this.winCondition = newWinCondition;
     this.game.initGame();

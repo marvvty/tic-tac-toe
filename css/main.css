@@ -45,14 +45,13 @@ body {
   border-radius: 24px;
   padding: 16px;
   box-shadow: 0 0 20px #00ffff;
-  width: min(55vmin, 55vw);
+  width: min(48vmin, 48vw);
   grid-template-columns: repeat(var(--board-size, 3), 1fr);
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .grid-container-large {
   gap: 4px;
-  width: 97%;
 }
 .btn {
   cursor: pointer;
@@ -77,6 +76,14 @@ body {
   width: 100%;
   font-size: 32px;
 }
+.main__count-wins {
+  padding: 8px 16px;
+  border-radius: 16px;
+  border: 2px solid var(--secondary--color);
+  color: var(--white);
+  box-shadow: 0 0 15px #ce5e82;
+  font-size: 24px;
+}
 .grid-container__btn-large {
   font-size: 16px;
   border-radius: 16px;
@@ -96,10 +103,4 @@ body {
 }
 .controller__button:hover {
   background-color: #3a3a3a;
-}
-
-@media (max-width: 768px) {
-  .grid-container {
-    grid-template: 40px 40px 40px/40px 40px 40px;
-  }
 }
