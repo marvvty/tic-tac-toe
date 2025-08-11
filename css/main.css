@@ -11,9 +11,6 @@ body {
   display: flex;
   gap: 50px;
 }
-.music__play-btn {
-  padding: 8px 16px;
-}
 .list {
   display: flex;
   gap: 20px;
@@ -81,13 +78,15 @@ body {
   box-shadow: 0 0 20px #00ffff;
   margin: auto;
 }
-
 .btn {
+  cursor: pointer;
+}
+.controller__element {
+  padding: 8px 16px;
+  background-color: #000000;
   border-radius: 16px;
   border: 2px solid var(--secondary--color);
-  background-color: #1a1a1a;
   color: var(--white);
-  cursor: pointer;
   box-shadow: 0 0 15px rgba(255, 0, 128, 0.5);
   font-family: "Pixelify Sans", sans-serif;
   font-size: 16px;
@@ -103,12 +102,12 @@ body {
 }
 .controller {
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
-
-.controller__btn {
-  padding: 8px 16px;
-  background-color: #000000;
+.input-controller {
+  display: flex;
+  gap: 10px;
 }
 .controller__button--winner {
   background-color: #5d744e;

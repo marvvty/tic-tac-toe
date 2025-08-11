@@ -57,7 +57,7 @@ class TicTacToeBoard {
 
   createCell(row, col) {
     const btn = document.createElement("button");
-    btn.classList = "btn grid-container__btn";
+    btn.classList = "btn controller__element grid-container__btn";
 
     btn.textContent = this.board[row][col];
     btn.addEventListener("click", () => this.player.makeMove(row, col));
