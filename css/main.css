@@ -11,44 +11,13 @@ body {
   display: flex;
   gap: 50px;
 }
-.list {
-  display: flex;
-  gap: 20px;
-}
-.dropdown-card {
-  display: inline-block;
-}
-.dropdown {
-  padding: 8px 28px;
-}
-.dropdown__content {
-  display: none;
-  position: absolute;
-  background-color: rgb(0, 0, 0);
-  padding: 15px;
-  box-shadow: 0 0 20px #00ffff;
-  border: 2px solid #00ffff;
-  border-radius: 24px;
-}
 
-.dropdown__btn {
-  display: flex;
-  text-align: center;
-  justify-content: center;
-}
-
-.dropdown-card:hover .dropdown__content {
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-}
 .main {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-family: "Pixelify Sans", sans-serif;
-  height: 800px;
 }
 .container {
   display: flex;
@@ -76,11 +45,19 @@ body {
   border-radius: 24px;
   padding: 16px;
   box-shadow: 0 0 20px #00ffff;
-  margin: auto;
+  width: min(60vmin, 60vw);
+  grid-template-columns: repeat(var(--board-size, 3), 1fr);
+  overflow: hidden;
+}
+
+.grid-container-large {
+  gap: 4px;
+  width: 97%;
 }
 .btn {
   cursor: pointer;
 }
+.btn,
 .controller__element {
   padding: 8px 16px;
   background-color: #000000;
@@ -96,9 +73,14 @@ body {
   box-shadow: 0 0 25px var(--secondary--color);
 }
 .grid-container__btn {
+  aspect-ratio: 1 / 1;
+  width: 100%;
   font-size: 32px;
-  width: 50px;
-  height: 50px;
+}
+.grid-container__btn-large {
+  font-size: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--secondary--color);
 }
 .controller {
   display: flex;

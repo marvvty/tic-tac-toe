@@ -17,14 +17,14 @@ class Player {
     this.boardObject.board[row][col] = this.player;
     this.boardObject.drawBoard();
 
-    if (this.game.checkWin()) {
+    if (this.boardObject.checkWin()) {
       this.game.msg.textContent = `Winner is ${this.player}`;
       this.game.setIsGameOver(true);
 
       return;
     }
 
-    if (this.game.checkDraw()) {
+    if (this.boardObject.checkDraw()) {
       this.game.msg.textContent = `Draw`;
       this.game.setIsGameOver(true);
 
@@ -60,18 +60,30 @@ class TicTacToeBoard {
     btn.classList = "btn controller__element grid-container__btn";
 
     btn.textContent = this.board[row][col];
-    btn.addEventListener("click", () => this.player.makeMove(row, col));
+    btn.addEventListener("click", () => this.game.player.makeMove(row, col));
 
     return btn;
   }
 
   drawBoard() {
     this.boardDiv.replaceChildren();
-    this.boardDiv.style.gridTemplateColumns = `repeat(${this.boardSize}, 1fr)`;
+
+    this.boardDiv.style.setProperty("--board-size", this.boardSize);
+
+    if (this.boardSize > 10) {
+      this.boardDiv.classList.add("grid-container-large");
+    } else {
+      this.boardDiv.classList.remove("grid-container-large");
+    }
 
     for (let row = 0; row < this.boardSize; row++) {
       for (let col = 0; col < this.boardSize; col++) {
         const cellBtn = this.createCell(row, col);
+
+        if (this.boardSize > 10) {
+          cellBtn.classList.add("grid-container__btn-large");
+        }
+
         this.boardDiv.appendChild(cellBtn);
       }
     }
@@ -196,9 +208,8 @@ class TicTacToeGame {
     this.boardSizeInput = document.getElementById("boardSizeInput");
     this.setBoardSizeBtn = document.getElementById("setBoardSizeBtn");
 
-    this.player = new Player(this, null);
     this.boardObject = new TicTacToeBoard(this);
-    this.player.board = this.boardObject;
+    this.player = new Player(this, this.boardObject);
 
     this.initGame();
     this.addListeners();
