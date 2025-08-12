@@ -47,11 +47,11 @@ body {
   box-shadow: 0 0 20px #00ffff;
   width: min(48vmin, 48vw);
   grid-template-columns: repeat(var(--board-size, 3), 1fr);
-  overflow: scroll;
 }
 
 .grid-container-large {
-  gap: 4px;
+  gap: 2px;
+  width: auto;
 }
 .btn {
   cursor: pointer;
@@ -85,8 +85,7 @@ body {
   font-size: 24px;
 }
 .grid-container__btn-large {
-  font-size: 16px;
-  border-radius: 16px;
+  font-size: 12px;
   border: 1px solid var(--secondary--color);
 }
 .controller {

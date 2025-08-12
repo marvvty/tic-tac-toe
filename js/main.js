@@ -1,3 +1,4 @@
+"use strict";
 class Player {
   constructor(game, board) {
     this.player = "X";
@@ -99,7 +100,7 @@ class TicTacToeBoard {
 
     this.boardDiv.style.setProperty("--board-size", this.boardSize);
 
-    if (this.boardSize > 10) {
+    if (this.boardSize >= 14) {
       this.boardDiv.classList.add("grid-container-large");
     } else {
       this.boardDiv.classList.remove("grid-container-large");
